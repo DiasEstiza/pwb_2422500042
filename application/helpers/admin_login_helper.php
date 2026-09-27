@@ -5,5 +5,5 @@ function is_admin_logged_in()
 {
     if (!isset($_SESSION['admin_login'])) {
         redirect('admin/login');
-    }
+    } 
 }
