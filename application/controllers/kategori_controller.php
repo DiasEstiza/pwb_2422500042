@@ -19,3 +19,18 @@ class kategori_controller extends CI_Controller {
         $this->load->view('administrator/template/footer');
     }
 }
+
+public function tambah_kategori()
+{
+    $data['title'] = 'Tambah Kategori';
+
+    $this->form_validation->set_rules('nama_kategori', 'Nama Kategori', 'required');
+    if ($this->form_validation->run() !== FALSE) {
+        $this->__simpan_kategori();
+    } else {
+        $this->load->view('administrator/templates/header', $data);
+        $this->load->view('administrator/templates/sidebar');
+        $this->load->view('administrator/kategori/tambah_kategori');
+        $this->load->view('administrator/templates/footer');
+    }
+}*
