@@ -1,3 +1,4 @@
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -25,44 +26,39 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                        <h5 class="card-title">Kategori</h5>
-                        <p class="card-text">
-                            <div class="card-body">
-                                <?php if ($this->session->flashdata('message')) : ?>
-                                    <?= $this->session->flashdata('message') ?>
-                                <?php endif ?>
-                                <table class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>Deskripsi</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $no = 1;
-                                        foreach ($list_kategori as $kategori) : ?>
-                                            <tr data-widget="expandable-table" aria-expanded="false">
-                                                <td><?= $no ?></td>
-                                                <td><?= $kategori['nama'] ?></td>
-                                                <td><?= $kategori['deskripsi'] ?></td>
-                                                <td>edit hapus</td>
+                            <h5 class="card-title">Kategori</h5>
+                            <p class="card-text">
+                                <div class="card-body">
+                                    <?php if ($this->session->flashdata('message')) : ?>
+                                        <?= $this->session->flashdata('message') ?>
+                                    <?php endif ?>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Deskripsi</th>
+                                                <th>Action</th>
                                             </tr>
-                                        <?php $no++; endforeach ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </p>
+                                        </thead>
+                                        <tbody>
+                                            <?php $no = 1;
+                                            foreach ($list_kategori as $kategori) : ?>
+                                                <tr data-widget="expandable-table" aria-expanded="false">
+                                                    <td><?= $no ?></td>
+                                                    <td><?= $kategori['nama'] ?></td>
+                                                    <td><?= $kategori['deskripsi'] ?></td>
+                                                    <td>edit hapus</td>
+                                                </tr>
+                                            <?php $no++; endforeach ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </p>
+                        </div>
                     </div>
-                    </div>
-
-                    </div>
-
-                    </div>
-                    <!-- /.col-md-6 -->
-
-                    </div>
-                    <!-- /.row -->
-                    </div><!-- /.container-fluid -->
-                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </div>
+</div>
