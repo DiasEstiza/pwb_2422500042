@@ -52,9 +52,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
 $route['admin']         = 'administrator/Admin_dashboard_controller/index';
 $route['admin/login']   = 'administrator/admin_auth_controller/index';
 $route['admin/logout']  = 'administrator/admin_auth_controller/logout';
-#admin kategori
+
+// Admin kategori
 $route['administrator/kategori'] = 'administrator/kategori_controller/index';
 $route['administrator/kategori/tambah'] = 'administrator/kategori_controller/tambah_kategori';
