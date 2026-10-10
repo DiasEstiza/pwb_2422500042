@@ -12,9 +12,9 @@ class kategori_controller extends CI_Controller {
 
     public function index() {
         $data['list_kategori'] = $this->produk_kategori_model->get_all();
-        $this->load->view('administrator/templates/header');
-        $this->load->view('administrator/templates/sidebar');
+        $this->load->view('administrator/template/header');
+        $this->load->view('administrator/template/sidebar');
         $this->load->view('administrator/kategori/index', $data);
-        $this->load->view('administrator/templates/footer');
+        $this->load->view('administrator/template/footer');
     }
 }
