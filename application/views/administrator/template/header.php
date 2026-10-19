@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-<<<<<<< HEAD
     <title><?= isset($title) ? html_escape($title) : 'Administrator - Shopi Amik'; ?></title>
-=======
   <title><?= isset($title) ? html_escape($title) : 'Shopi Amik' ?></title>
->>>>>>> 3a269b6 (update heander.php)
 
     <link rel="stylesheet" href="<?= base_url('assets/plugins/fontawesome-free/css/all.min.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/dist/css/adminlte.min.css'); ?>">
