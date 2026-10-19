@@ -1,4 +1,4 @@
-
+```php
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -72,7 +72,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                        <?php endforeach; ?>
+                                        <?php endforeach ?>
                                     </tbody>
                                 </table>
                             </p>
@@ -84,3 +84,4 @@
     </div>
 </div>
 <!-- /.content-wrapper -->
+```
