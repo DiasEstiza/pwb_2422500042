@@ -1,4 +1,3 @@
-
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -18,13 +17,13 @@ class Produk_model extends CI_Model
     }
 
     public function tambah($data)
-{
-    if ($this->db->insert($this->_table, $data)) {
-        return $this->db->insert_id();
-    }
+    {
+        if ($this->db->insert($this->_table, $data)) {
+            return $this->db->insert_id();
+        }
 
-    return false;
-}
+        return false;
+    }
 
     public function get_by_id($id)
     {
@@ -37,13 +36,11 @@ class Produk_model extends CI_Model
     public function ubah($data, $id)
     {
         $this->db->where('id_produk', $id);
-        $this->db->update($this->_table, $data);
-
-        return ($this->db->affected_rows() != 1) ? false : true;
+        return $this->db->update($this->_table, $data);
     }
 
     public function hapus($id)
     {
-        $this->db->delete($this->_table, array('id_produk' => $id));
+        return $this->db->delete($this->_table, array('id_produk' => $id));
     }
 }

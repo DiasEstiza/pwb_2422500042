@@ -28,13 +28,20 @@ $route['admin/kategori/tambah'] = 'administrator/kategori_controller/tambah_kate
 $route['admin/kategori/hapus/(:num)'] = 'administrator/kategori_controller/hapus_kategori/$1';
 $route['admin/kategori/ubah/(:num)'] = 'administrator/kategori_controller/ubah_kategori/$1';
 
-<<<<<<< HEAD
-$route['administrator/produk'] = 'Produk_controller/index';
-$route['administrator/produk/tambah_produk'] = 'Produk_controller/tambah_produk';
-=======
-#produk
+// Produk (Akses via administrator/)
+$route['administrator/produk'] = 'administrator/Produk_controller/index';
+$route['administrator/produk/tambah'] = 'administrator/Produk_controller/tambah_produk';
+$route['administrator/produk/ubah/(:num)'] = 'administrator/Produk_controller/ubah_produk/$1';
+$route['administrator/produk/hapus/(:num)'] = 'administrator/Produk_controller/hapus_produk/$1';
+
+// Alias Produk (Akses via admin/)
 $route['admin/produk'] = 'administrator/Produk_controller/index';
 $route['admin/produk/tambah'] = 'administrator/Produk_controller/tambah_produk';
-$route['admin/produk/ubah(:num)'] = 'administrator/Produk_controller/ubah_produk/$1';
-$route['admin/produk/hapus/(:num)'] = 'administrator/Produk_controller/hapus_produk/$1;'
->>>>>>> c515dea (update routes.php)
+$route['admin/produk/ubah/(:num)'] = 'administrator/Produk_controller/ubah_produk/$1';
+$route['admin/produk/hapus/(:num)'] = 'administrator/Produk_controller/hapus_produk/$1';
+
+// Alias route produk
+$route['admin/produk'] = 'administrator/Produk_controller/index';
+$route['admin/produk/tambah'] = 'administrator/Produk_controller/tambah_produk';
+$route['admin/produk/ubah/(:num)'] = 'administrator/Produk_controller/ubah_produk/$1';
+$route['admin/produk/hapus/(:num)'] = 'administrator/Produk_controller/hapus_produk/$1';
