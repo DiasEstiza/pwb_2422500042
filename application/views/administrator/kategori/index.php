@@ -1,11 +1,10 @@
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Kategori</h1>
+                    <h1>Kategori</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -17,11 +16,10 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- /.content-header -->
+    </section>
 
     <!-- Main content -->
-    <div class="content">
+    <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -47,7 +45,7 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 60px;">No</th>
-                                            <th>Nama</th>
+                                            <th>Nama Kategori</th>
                                             <th>Deskripsi</th>
                                             <th style="width: 180px;">Action</th>
                                         </tr>
@@ -58,9 +56,9 @@
                                             <?php $no = 1; ?>
                                             <?php foreach ($list_kategori as $kategori) : ?>
                                                 <?php
-                                                $id_field = $this->produk_kategori_model->get_primary_key();
-                                                $id = ($id_field !== FALSE && isset($kategori[$id_field]))
-                                                    ? $kategori[$id_field]
+                                                $primary_key = $this->produk_kategori_model->get_primary_key();
+                                                $id = ($primary_key !== FALSE && isset($kategori[$primary_key]))
+                                                    ? $kategori[$primary_key]
                                                     : NULL;
                                                 ?>
 
@@ -110,6 +108,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
-<!-- /.content-wrapper -->
