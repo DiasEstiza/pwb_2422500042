@@ -1,4 +1,3 @@
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -7,15 +6,17 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Kategori</h1>
-                </div><!-- /.col -->
+                </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="<?= site_url('admin') ?>">Home</a>
+                        </li>
                         <li class="breadcrumb-item active">Kategori</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.content-header -->
 
@@ -23,42 +24,92 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Data Kategori</h3>
+
+                            <div class="card-tools">
+                                <a href="<?= site_url('administrator/kategori/tambah') ?>"
+                                   class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus"></i> Tambah Kategori
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="card-body">
-                            <h5 class="card-title">Kategori</h5>
-                            <p class="card-text">
-                                <div class="card-body">
-                                    <?php if ($this->session->flashdata('message')) : ?>
-                                        <?= $this->session->flashdata('message') ?>
-                                    <?php endif ?>
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama</th>
-                                                <th>Deskripsi</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php $no = 1;
-                                            foreach ($list_kategori as $kategori) : ?>
-                                                <tr data-widget="expandable-table" aria-expanded="false">
-                                                    <td><?= $no ?></td>
-                                                    <td><?= $kategori['nama'] ?></td>
-                                                    <td><?= $kategori['deskripsi'] ?></td>
-                                                    <td>edit hapus</td>
+                            <?php if ($this->session->flashdata('message')) : ?>
+                                <?= $this->session->flashdata('message') ?>
+                            <?php endif; ?>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 60px;">No</th>
+                                            <th>Nama</th>
+                                            <th>Deskripsi</th>
+                                            <th style="width: 180px;">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php if (!empty($list_kategori)) : ?>
+                                            <?php $no = 1; ?>
+                                            <?php foreach ($list_kategori as $kategori) : ?>
+                                                <?php
+                                                $id_field = $this->produk_kategori_model->get_primary_key();
+                                                $id = ($id_field !== FALSE && isset($kategori[$id_field]))
+                                                    ? $kategori[$id_field]
+                                                    : NULL;
+                                                ?>
+
+                                                <tr>
+                                                    <td><?= $no++ ?></td>
+
+                                                    <td>
+                                                        <?= html_escape(isset($kategori['nama']) ? $kategori['nama'] : '') ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?= html_escape(isset($kategori['deskripsi']) ? $kategori['deskripsi'] : '') ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?php if ($id !== NULL) : ?>
+                                                            <a href="<?= site_url('administrator/kategori/ubah/' . $id) ?>"
+                                                               class="btn btn-warning btn-sm">
+                                                                <i class="fas fa-edit"></i> Ubah
+                                                            </a>
+
+                                                            <a href="<?= site_url('administrator/kategori/hapus/' . $id) ?>"
+                                                               class="btn btn-danger btn-sm"
+                                                               onclick="return confirm('Yakin ingin menghapus kategori ini?')">
+                                                                <i class="fas fa-trash"></i> Hapus
+                                                            </a>
+                                                        <?php else : ?>
+                                                            <span class="text-danger">
+                                                                ID kategori tidak ditemukan
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </td>
                                                 </tr>
-                                            <?php $no++; endforeach ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </p>
+                                            <?php endforeach; ?>
+                                        <?php else : ?>
+                                            <tr>
+                                                <td colspan="4" class="text-center">
+                                                    Belum ada data kategori.
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </div>
 </div>
+<!-- /.content-wrapper -->

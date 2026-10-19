@@ -1,0 +1,21 @@
+PANDUAN MENJALANKAN PROYEK PWB_2422500042
+
+1. Ekstrak folder pwb_2422500042 ke C:\\xampp\\htdocs\\pwb_2422500042.
+2. Jalankan Apache dan MySQL dari XAMPP.
+3. Pastikan database bernama pwb_2422500042 tersedia di phpMyAdmin.
+4. Pastikan tabel kategori memiliki kolom nama dan deskripsi, serta satu kolom primary key numerik (disarankan id_kategori AUTO_INCREMENT).
+5. Periksa application/config/database.php. Default ZIP menggunakan host localhost, user root, password kosong, database pwb_2422500042.
+6. Buka http://localhost/pwb_2422500042/index.php/admin/login untuk login. Bila mod_rewrite aktif, URL tanpa index.php juga dapat digunakan.
+7. Setelah login, buka http://localhost/pwb_2422500042/index.php/administrator/kategori.
+
+Jika URL tanpa index.php masih 404, gunakan URL dengan index.php terlebih dahulu. Pastikan mod_rewrite Apache aktif dan AllowOverride mengizinkan .htaccess sebelum menggunakan URL tanpa index.php.
+
+TABEL kategori yang disarankan jika belum ada:
+CREATE TABLE kategori (
+  id_kategori INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nama VARCHAR(100) NOT NULL,
+  deskripsi TEXT NOT NULL,
+  PRIMARY KEY (id_kategori)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+Catatan: aplikasi memerlukan akun admin yang sudah ada di tabel administrator agar pemeriksaan login berjalan. ZIP tidak berisi dump database sehingga akun dan isi database tidak dapat dibuat otomatis oleh arsip ini.
