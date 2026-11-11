@@ -51,3 +51,8 @@ $route['administrator/ongkir'] = 'administrator/ongkir_controller/index';
 $route['administrator/ongkir/tambah'] = 'administrator/ongkir_controller/tambah_ongkir';
 $route['administrator/ongkir/hapus/(:num)'] = 'administrator/ongkir_controller/hapus_ongkir/$1';
 $route['administrator/ongkir/ubah/(:num)'] = 'administrator/ongkir_controller/ubah_ongkir/$1';
+
+#pelanggan
+$route['login'] = 'pelanggan_controller/login';
+$route['register'] = 'pelanggan_controller/register';
+$route['logout'] = 'pelanggan_controller/logout';
