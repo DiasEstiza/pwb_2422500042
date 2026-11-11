@@ -59,6 +59,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="<?= site_url('administrator/ongkir') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>Ongkir</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="<?= site_url('admin/logout') ?>" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Logout</p>

@@ -45,3 +45,9 @@ $route['admin/produk'] = 'administrator/Produk_controller/index';
 $route['admin/produk/tambah'] = 'administrator/Produk_controller/tambah_produk';
 $route['admin/produk/ubah/(:num)'] = 'administrator/Produk_controller/ubah_produk/$1';
 $route['admin/produk/hapus/(:num)'] = 'administrator/Produk_controller/hapus_produk/$1';
+
+// Admin ongkir
+$route['administrator/ongkir'] = 'administrator/ongkir_controller/index';
+$route['administrator/ongkir/tambah'] = 'administrator/ongkir_controller/tambah_ongkir';
+$route['administrator/ongkir/hapus/(:num)'] = 'administrator/ongkir_controller/hapus_ongkir/$1';
+$route['administrator/ongkir/ubah/(:num)'] = 'administrator/ongkir_controller/ubah_ongkir/$1';

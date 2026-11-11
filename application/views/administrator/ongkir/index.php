@@ -1,0 +1,123 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Ongkir</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">
+                            <a href="<?= site_url('admin') ?>">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Ongkir</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Data Ongkir</h3>
+
+                            <div class="card-tools">
+                                <a href="<?= site_url('administrator/ongkir/tambah') ?>"
+                                   class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus"></i> Tambah Ongkir
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <?php if ($this->session->flashdata('message')) : ?>
+                                <?= $this->session->flashdata('message') ?>
+                            <?php endif; ?>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 60px;">No</th>
+                                            <th>Nama Ekspedisi</th>
+                                            <th>Jenis Layanan</th>
+                                            <th>Tarif Per Kg</th>
+                                            <th>Status</th>
+                                            <th style="width: 180px;">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php if (!empty($list_ongkir)) : ?>
+                                            <?php $no = 1; ?>
+                                            <?php foreach ($list_ongkir as $ongkir) : ?>
+                                                <?php
+                                                $primary_key = $this->produk_ongkir_model->get_primary_key();
+                                                $id = ($primary_key !== FALSE && isset($ongkir[$primary_key]))
+                                                    ? $ongkir[$primary_key]
+                                                    : NULL;
+                                                ?>
+
+                                                <tr>
+                                                    <td><?= $no++ ?></td>
+
+                                                    <td>
+                                                        <?= html_escape(isset($ongkir['nama_ekspedisi042']) ? $ongkir['nama_ekspedisi042'] : '') ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?= html_escape(isset($ongkir['jenis_layanan042']) ? $ongkir['jenis_layanan042'] : '') ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?= html_escape(isset($ongkir['tarif_per_kg042']) ? $ongkir['tarif_per_kg042'] : '') ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?= html_escape(isset($ongkir['status042']) ? $ongkir['status042'] : '') ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?php if ($id !== NULL) : ?>
+                                                            <a href="<?= site_url('administrator/ongkir/ubah/' . $id) ?>"
+                                                               class="btn btn-warning btn-sm">
+                                                                <i class="fas fa-edit"></i> Ubah
+                                                            </a>
+
+                                                            <a href="<?= site_url('administrator/ongkir/hapus/' . $id) ?>"
+                                                               class="btn btn-danger btn-sm"
+                                                               onclick="return confirm('Yakin ingin menghapus ongkir ini?')">
+                                                                <i class="fas fa-trash"></i> Hapus
+                                                            </a>
+                                                        <?php else : ?>
+                                                            <span class="text-danger">
+                                                                ID ongkir tidak ditemukan
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        <?php else : ?>
+                                            <tr>
+                                                <td colspan="4" class="text-center">
+                                                    Belum ada data ongkir.
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
