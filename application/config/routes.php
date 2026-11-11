@@ -56,3 +56,4 @@ $route['administrator/ongkir/ubah/(:num)'] = 'administrator/ongkir_controller/ub
 $route['login'] = 'pelanggan_controller/login';
 $route['register'] = 'pelanggan_controller/register';
 $route['logout'] = 'pelanggan_controller/logout';
+$route['profil'] = 'pelanggan_controller/profil';

@@ -44,14 +44,15 @@
                     <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                 </form>
 
-                    <?php if ($this->session->has_userdata('pelanggan_login')) : ?>
+                   <?php if ($this->session->has_userdata('pelanggan_login')) : ?>
                     <div class="text-end">
-                        <a href="<?= base_url('keranjang') ?>" class="btn btn-outline-light me-2 ">Keranjang</a>
+                        <a href="<?= base_url('profil') ?>" class="btn btn-outline-light me-2">Profil</a>
+                        <a href="<?= base_url('keranjang') ?>" class="btn btn-outline-light me-2">Keranjang</a>
                         <a href="<?= base_url('logout') ?>" class="btn btn-danger">Logout</a>
                     </div>
                     <?php else : ?>
                     <div class="text-end">
-                        <a href="<?= base_url('login') ?>" class="btn btn-outline-light me-2 ">Login</a>
+                        <a href="<?= base_url('login') ?>" class="btn btn-outline-light me-2">Login</a>
                         <a href="<?= base_url('register') ?>" class="btn btn-warning">Register</a>
                     </div>
                     <?php endif ?>

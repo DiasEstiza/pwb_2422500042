@@ -55,4 +55,109 @@ class Pelanggan_controller extends CI_Controller
         }
         redirect('login');
     }
+
+    public function register()
+    {
+        if ($this->session->has_userdata('pelanggan_login')) {
+            redirect(base_url());
+            die;
+        }
+        // set required semua
+        // rule lengkap --> https://codeigniter.com/userguide3/libraries/form_validation.html#rule-reference
+        $this->form_validation->set_rules('nama', 'Nama Lengkap', 'required');
+        $this->form_validation->set_rules('nopon', 'No Telpon', 'required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required');
+        $this->form_validation->set_rules('kota', 'Kota Tinggal', 'required');
+        $this->form_validation->set_rules('kodepos', 'Kode POS', 'required');
+        $this->form_validation->set_rules('provinsi', 'Provinsi', 'required');
+        $this->form_validation->set_rules('email', 'Alamat Email', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+        if ($this->form_validation->run() !== FALSE) {
+            $this->_register();
+        } else {
+            $this->load->view('ecom/template/header');
+            $this->load->view('ecom/pelanggan_register');
+            $this->load->view('ecom/template/footer');
+        }
+    }
+
+    private function _register()
+    {
+        $email = $this->input->post('email');
+        // check apakah email sudah di daftarkan?
+        // atau bisa juga dengan menggunakan form_validation dengan rulse is_unique pada email
+        if (!($this->pelanggan_model->get_by_email($email))) {
+            $data = [
+                'email' => $email,
+                'password' => md5($this->input->post('password')),
+                'nama_pelanggan' => ucwords($this->input->post('nama')),
+                'telp_pelanggan' => $this->input->post('nopon'),
+                'alamat' => ucwords($this->input->post('alamat')),
+                'kota' => ucwords($this->input->post('kota')),
+                'kode_pos' => $this->input->post('kodepos'),
+                'provinsi' => ucwords($this->input->post('provinsi'))
+            ];
+
+            $simpan = $this->pelanggan_model->tambah($data);
+            if ($simpan) {
+                $this->session->set_flashdata('message', '
+                <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                        <use xlink:href="#check-circle-fill" />
+                    </svg>
+                    <div>
+                        Berhasil register, Silakan <b>LOGIN!!</b>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                ');
+            } else {
+                $this->session->set_flashdata('message', '
+                <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                        <use xlink:href="#exclamation-triangle-fill" />
+                    </svg>
+                    <div>
+                        Gagal melakukan regsitrasi!!
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                ');
+            }
+        } else {
+            $this->session->set_flashdata('message', '
+                <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                        <use xlink:href="#exclamation-triangle-fill" />
+                    </svg>
+                    <div>
+                        Email yang anda masukan sudah terdaftar!!
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            ');
+        }
+        redirect('register');
+    }
+
+    public function logout()
+{
+    $session_data = array('id', 'email', 'nama', 'pelanggan_login');
+    $this->session->unset_userdata($session_data);
+    redirect('login'); 
+}
+    public function profil()
+        {
+            if (!$this->session->has_userdata('pelanggan_login')) {
+                redirect('login');
+                die;
+            }
+
+            $id_pelanggan = $this->session->userdata('id');
+            $data['pelanggan'] = $this->pelanggan_model->get_by_id($id_pelanggan);
+
+            $this->load->view('ecom/template/header');
+            $this->load->view('ecom/pelanggan_profil', $data);
+            $this->load->view('ecom/template/footer');
+        }
 }
