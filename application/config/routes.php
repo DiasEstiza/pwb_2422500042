@@ -57,3 +57,7 @@ $route['login'] = 'pelanggan_controller/login';
 $route['register'] = 'pelanggan_controller/register';
 $route['logout'] = 'pelanggan_controller/logout';
 $route['profil'] = 'pelanggan_controller/profil';
+
+#ecom
+$route['produk'] = 'Produk_controller/detail';
+$route['produk/(:num)'] = 'Produk_controller/detail/$1';

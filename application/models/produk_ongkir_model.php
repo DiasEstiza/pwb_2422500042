@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class produk_ongkir_model extends CI_Model
+class Produk_ongkir_model extends CI_Model
 {
     private $_table = 'ongkir';
     private $_primary_key = NULL;
