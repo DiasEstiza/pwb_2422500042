@@ -6,7 +6,7 @@ class Pelanggan_controller extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('pelanggan_model');
+        $this->load->model('Pelanggan_model', 'pelanggan_model');
     }
 
     public function login()
@@ -15,8 +15,10 @@ class Pelanggan_controller extends CI_Controller
             redirect(base_url());
             die;
         }
+
         $this->form_validation->set_rules('email', 'Email', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
+
         if ($this->form_validation->run() !== FALSE) {
             $this->_login();
         } else {
@@ -30,7 +32,9 @@ class Pelanggan_controller extends CI_Controller
     {
         $email = $this->input->post('email');
         $password = md5($this->input->post('password'));
+
         $check = $this->pelanggan_model->check_login($email, $password);
+
         if ($check) {
             $session_data = array(
                 'id' => $check['id_pelanggan'],
@@ -38,6 +42,7 @@ class Pelanggan_controller extends CI_Controller
                 'nama' => $check['nama_pelanggan'],
                 'pelanggan_login' => TRUE
             );
+
             $this->session->set_userdata($session_data);
             redirect(base_url());
         } else {
@@ -53,6 +58,7 @@ class Pelanggan_controller extends CI_Controller
                 </div>
             ');
         }
+
         redirect('login');
     }
 
@@ -62,6 +68,7 @@ class Pelanggan_controller extends CI_Controller
             redirect(base_url());
             die;
         }
+
         // set required semua
         // rule lengkap --> https://codeigniter.com/userguide3/libraries/form_validation.html#rule-reference
         $this->form_validation->set_rules('nama', 'Nama Lengkap', 'required');
@@ -72,6 +79,7 @@ class Pelanggan_controller extends CI_Controller
         $this->form_validation->set_rules('provinsi', 'Provinsi', 'required');
         $this->form_validation->set_rules('email', 'Alamat Email', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
+
         if ($this->form_validation->run() !== FALSE) {
             $this->_register();
         } else {
@@ -84,9 +92,11 @@ class Pelanggan_controller extends CI_Controller
     private function _register()
     {
         $email = $this->input->post('email');
+
         // check apakah email sudah di daftarkan?
         // atau bisa juga dengan menggunakan form_validation dengan rulse is_unique pada email
         if (!($this->pelanggan_model->get_by_email($email))) {
+
             $data = [
                 'email' => $email,
                 'password' => md5($this->input->post('password')),
@@ -99,6 +109,7 @@ class Pelanggan_controller extends CI_Controller
             ];
 
             $simpan = $this->pelanggan_model->tambah($data);
+
             if ($simpan) {
                 $this->session->set_flashdata('message', '
                 <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
@@ -137,27 +148,29 @@ class Pelanggan_controller extends CI_Controller
                 </div>
             ');
         }
+
         redirect('register');
     }
 
     public function logout()
-{
-    $session_data = array('id', 'email', 'nama', 'pelanggan_login');
-    $this->session->unset_userdata($session_data);
-    redirect('login'); 
-}
+    {
+        $session_data = array('id', 'email', 'nama', 'pelanggan_login');
+        $this->session->unset_userdata($session_data);
+        redirect('login');
+    }
+
     public function profil()
-        {
-            if (!$this->session->has_userdata('pelanggan_login')) {
-                redirect('login');
-                die;
-            }
-
-            $id_pelanggan = $this->session->userdata('id');
-            $data['pelanggan'] = $this->pelanggan_model->get_by_id($id_pelanggan);
-
-            $this->load->view('ecom/template/header');
-            $this->load->view('ecom/pelanggan_profil', $data);
-            $this->load->view('ecom/template/footer');
+    {
+        if (!$this->session->has_userdata('pelanggan_login')) {
+            redirect('login');
+            die;
         }
+
+        $id_pelanggan = $this->session->userdata('id');
+        $data['pelanggan'] = $this->pelanggan_model->get_by_id($id_pelanggan);
+
+        $this->load->view('ecom/template/header');
+        $this->load->view('ecom/pelanggan_profil', $data);
+        $this->load->view('ecom/template/footer');
+    }
 }

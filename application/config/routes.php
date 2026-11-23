@@ -34,14 +34,10 @@ $route['administrator/produk/tambah'] = 'administrator/Produk_controller/tambah_
 $route['administrator/produk/ubah/(:num)'] = 'administrator/Produk_controller/ubah_produk/$1';
 $route['administrator/produk/hapus/(:num)'] = 'administrator/Produk_controller/hapus_produk/$1';
 
-// Alias Produk (Akses via admin/)
-$route['admin/produk'] = 'administrator/Produk_controller/index';
-$route['admin/produk/tambah'] = 'administrator/Produk_controller/tambah_produk';
-$route['admin/produk/ubah/(:num)'] = 'administrator/Produk_controller/ubah_produk/$1';
-$route['admin/produk/hapus/(:num)'] = 'administrator/Produk_controller/hapus_produk/$1';
+
 
 // Alias route produk
-$route['admin/produk'] = 'administrator/Produk_controller/index';
+$route['administrator/produk'] = 'administrator/Produk_controller/index';
 $route['admin/produk/tambah'] = 'administrator/Produk_controller/tambah_produk';
 $route['admin/produk/ubah/(:num)'] = 'administrator/Produk_controller/ubah_produk/$1';
 $route['admin/produk/hapus/(:num)'] = 'administrator/Produk_controller/hapus_produk/$1';

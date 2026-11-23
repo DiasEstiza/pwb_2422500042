@@ -3,7 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Pelanggan_model extends CI_Model
 {
-
     private $_table = "pelanggan";
 
     public function get_all()
@@ -15,7 +14,7 @@ class Pelanggan_model extends CI_Model
     public function tambah($data)
     {
         $this->db->insert($this->_table, $data);
-        #Untuk check apakah berhasil atau tidak input data
+
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -23,6 +22,7 @@ class Pelanggan_model extends CI_Model
     {
         $this->db->where('id_pelanggan', $id);
         $query = $this->db->get($this->_table);
+
         return $query->row_array();
     }
 
@@ -30,6 +30,7 @@ class Pelanggan_model extends CI_Model
     {
         $this->db->where('email', $email);
         $query = $this->db->get($this->_table);
+
         return $query->row_array();
     }
 
@@ -37,6 +38,7 @@ class Pelanggan_model extends CI_Model
     {
         $this->db->where('email', $email);
         $this->db->where('password', $password);
+
         return $this->db->get($this->_table)->row_array();
     }
 
@@ -44,7 +46,7 @@ class Pelanggan_model extends CI_Model
     {
         $this->db->where('id_pelanggan', $id);
         $this->db->update($this->_table, $data);
-        return ($this->db->affected_rows() != 1) ? false : true;
+
+        return ($this->db->affected_rows() >= 0);
     }
-    
 }

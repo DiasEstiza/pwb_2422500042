@@ -1,219 +1,158 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Produk_controller extends CI_Controller
+class Pelanggan_controller extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        is_admin_logged_in();
 
-        // Load model
-        $this->load->model('produk_model');
-        $this->load->model('produk_kategori_model');
-        $this->load->model('produk_gambar_model');
-
-        // Load library
+        $this->load->model('Pelanggan_model', 'pelanggan_model');
         $this->load->library('form_validation');
         $this->load->library('session');
+        $this->load->helper(array('url', 'form'));
     }
 
-    public function index()
+    public function login()
     {
-        $data['title'] = 'Daftar Produk';
-        $data['list_produk'] = $this->produk_model->get_all();
+        if ($this->session->has_userdata('pelanggan_login')) {
+            redirect(base_url());
+            die;
+        }
 
-        $this->load->view('administrator/template/header', $data);
-        $this->load->view('administrator/template/sidebar');
-        $this->load->view('administrator/produk/index', $data);
-        $this->load->view('administrator/template/footer');
-    }
-
-    public function tambah_produk()
-    {
-        $data['title'] = 'Tambah Produk';
-
-        $this->form_validation->set_rules(
-            'nama_produk',
-            'Nama produk',
-            'required'
-        );
-
-        $this->form_validation->set_rules(
-            'kategori_produk',
-            'Kategori',
-            'required'
-        );
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
 
         if ($this->form_validation->run() !== FALSE) {
-            $this->__simpan_produk();
+            $this->_login();
         } else {
-            $data['list_kategori'] = $this->produk_kategori_model->get_all();
-
-            $this->load->view('administrator/template/header', $data);
-            $this->load->view('administrator/template/sidebar');
-            $this->load->view('administrator/produk/tambah_produk', $data);
-            $this->load->view('administrator/template/footer');
+            $this->load->view('ecom/template/header');
+            $this->load->view('ecom/pelanggan_login');
+            $this->load->view('ecom/template/footer');
         }
     }
 
-    public function ubah_produk($id = NULL)
+    private function _login()
     {
-        if ($id == NULL) {
-            redirect('administrator/produk');
+        $email = $this->input->post('email');
+        $password = md5($this->input->post('password'));
+
+        $check = $this->pelanggan_model->check_login($email, $password);
+
+        if ($check) {
+            $session_data = array(
+                'id' => $check['id_pelanggan'],
+                'email' => $check['email'],
+                'nama' => $check['nama_pelanggan'],
+                'pelanggan_login' => TRUE
+            );
+
+            $this->session->set_userdata($session_data);
+            redirect(base_url());
+        } else {
+            $this->session->set_flashdata('message', '
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Email atau password salah!!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            ');
         }
 
-        $data['title'] = 'Ubah Produk';
-        $data['produk'] = $this->produk_model->get_by_id($id);
+        redirect('login');
+    }
 
-        if (!$data['produk']) {
-            show_404();
+    public function register()
+    {
+        if ($this->session->has_userdata('pelanggan_login')) {
+            redirect(base_url());
+            die;
         }
 
-        $this->form_validation->set_rules(
-            'nama_produk',
-            'Nama produk',
-            'required'
-        );
-
-        $this->form_validation->set_rules(
-            'kategori_produk',
-            'Kategori',
-            'required'
-        );
+        $this->form_validation->set_rules('nama', 'Nama Lengkap', 'required');
+        $this->form_validation->set_rules('nopon', 'No Telpon', 'required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required');
+        $this->form_validation->set_rules('kota', 'Kota Tinggal', 'required');
+        $this->form_validation->set_rules('kodepos', 'Kode POS', 'required');
+        $this->form_validation->set_rules('provinsi', 'Provinsi', 'required');
+        $this->form_validation->set_rules('email', 'Alamat Email', 'required|valid_email');
+        $this->form_validation->set_rules('password', 'Password', 'required');
 
         if ($this->form_validation->run() !== FALSE) {
-            $this->__update_produk($id);
+            $this->_register();
         } else {
-            $data['list_kategori'] = $this->produk_kategori_model->get_all();
-            
-            // Kirim data gambar ke view
-            $data['gambar_model']  = $this->produk_gambar_model;
-            $data['gambar_produk'] = $this->produk_gambar_model->get_by_produk_id($id);
-
-            $this->load->view('administrator/template/header', $data);
-            $this->load->view('administrator/template/sidebar');
-            $this->load->view('administrator/produk/ubah_produk', $data);
-            $this->load->view('administrator/template/footer');
+            $this->load->view('ecom/template/header');
+            $this->load->view('ecom/pelanggan_register');
+            $this->load->view('ecom/template/footer');
         }
     }
 
-    private function __simpan_produk()
+    private function _register()
     {
-        $data = [
-            'nama' => ucwords($this->input->post('nama_produk')),
-            'kategori_id' => $this->input->post('kategori_produk'),
-            'harga' => $this->input->post('harga_produk'),
-            'stok' => $this->input->post('stok_produk'),
-            'deskripsi' => ucfirst($this->input->post('deskripsi_produk'))
-        ];
+        $email = $this->input->post('email');
 
-        // Simpan data produk
-        $id_produk = $this->produk_model->tambah($data);
+        if (!$this->pelanggan_model->get_by_email($email)) {
+            $data = [
+                'email' => $email,
+                'password' => md5($this->input->post('password')),
+                'nama_pelanggan' => ucwords($this->input->post('nama')),
+                'telp_pelanggan' => $this->input->post('nopon'),
+                'alamat' => ucwords($this->input->post('alamat')),
+                'kota' => ucwords($this->input->post('kota')),
+                'kode_pos' => $this->input->post('kodepos'),
+                'provinsi' => ucwords($this->input->post('provinsi'))
+            ];
 
-        if (!$id_produk) {
-            show_error('Produk gagal disimpan ke database.');
-            return;
-        }
+            $simpan = $this->pelanggan_model->tambah($data);
 
-        // Upload gambar jika ada file yang dipilih
-        if (
-            isset($_FILES['gambar_produk']['name']) &&
-            is_array($_FILES['gambar_produk']['name'])
-        ) {
-            $count = count($_FILES['gambar_produk']['name']);
-
-            if ($count > 0) {
-                $this->__produk_gambar_upload($count, $id_produk);
+            if ($simpan) {
+                $this->session->set_flashdata('message', '
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Berhasil register, Silakan <b>LOGIN!!</b>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                ');
+            } else {
+                $this->session->set_flashdata('message', '
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Gagal melakukan registrasi!!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                ');
             }
+        } else {
+            $this->session->set_flashdata('message', '
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Email yang anda masukan sudah terdaftar!!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            ');
         }
 
-        $this->session->set_flashdata('message', '
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Berhasil menambahkan produk!!
-                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                    aria-label="Close"></button>
-            </div>
-        ');
-
-        redirect('administrator/produk');
+        redirect('register');
     }
 
-    private function __update_produk($id)
+    public function logout()
     {
-        $data = [
-            'nama' => ucwords($this->input->post('nama_produk')),
-            'kategori_id' => $this->input->post('kategori_produk'),
-            'harga' => $this->input->post('harga_produk'),
-            'stok' => $this->input->post('stok_produk'),
-            'deskripsi' => ucfirst($this->input->post('deskripsi_produk'))
-        ];
+        $session_data = array('id', 'email', 'nama', 'pelanggan_login');
 
-        // Update ke database ($data dulu baru $id)
-        $this->produk_model->ubah($data, $id);
+        $this->session->unset_userdata($session_data);
 
-        // Upload gambar baru jika ada
-        if (
-            isset($_FILES['gambar_produk']['name']) &&
-            is_array($_FILES['gambar_produk']['name'])
-        ) {
-            $count = count($_FILES['gambar_produk']['name']);
-
-            if ($count > 0) {
-                $this->__produk_gambar_upload($count, $id);
-            }
-        }
-
-        $this->session->set_flashdata('message', '
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Berhasil mengubah data produk!!
-                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                    aria-label="Close"></button>
-            </div>
-        ');
-
-        redirect('administrator/produk');
+        redirect('login');
     }
 
-    private function __produk_gambar_upload($count, $id_produk)
+    public function profil()
     {
-        $config['upload_path'] = FCPATH . 'uploads/produk/';
-        $config['allowed_types'] = 'jpg|jpeg|png|gif';
-        $config['max_size'] = 5000;
-
-        if (!is_dir($config['upload_path'])) {
-            mkdir($config['upload_path'], 0755, TRUE);
+        if (!$this->session->has_userdata('pelanggan_login')) {
+            redirect('login');
+            die;
         }
 
-        for ($i = 0; $i < $count; $i++) {
-            if (
-                !isset($_FILES['gambar_produk']['name'][$i]) ||
-                empty($_FILES['gambar_produk']['name'][$i])
-            ) {
-                continue;
-            }
+        $id_pelanggan = $this->session->userdata('id');
 
-            $_FILES['file']['name']     = $_FILES['gambar_produk']['name'][$i];
-            $_FILES['file']['type']     = $_FILES['gambar_produk']['type'][$i];
-            $_FILES['file']['tmp_name'] = $_FILES['gambar_produk']['tmp_name'][$i];
-            $_FILES['file']['error']    = $_FILES['gambar_produk']['error'][$i];
-            $_FILES['file']['size']     = $_FILES['gambar_produk']['size'][$i];
+        $data['pelanggan'] = $this->pelanggan_model->get_by_id($id_pelanggan);
 
-            $config['file_name'] = 'produk-' . $id_produk . '-' . time() . '-' . $i;
-
-            $this->load->library('upload');
-            $this->upload->initialize($config);
-
-            if ($this->upload->do_upload('file')) {
-                $uploadData = $this->upload->data();
-
-                $data = [
-                    'nama_gambar' => $uploadData['file_name'],
-                    'produk_id'  => $id_produk
-                ];
-
-                $this->produk_gambar_model->tambah($data);
-            }
-        }
+        $this->load->view('ecom/template/header');
+        $this->load->view('ecom/pelanggan_profil', $data);
+        $this->load->view('ecom/template/footer');
     }
 }
